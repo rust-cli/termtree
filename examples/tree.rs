@@ -1,0 +1,32 @@
+extern crate treeline;
+
+use treeline::Tree;
+
+use std::{io, fs};
+use std::path::Path;
+
+fn label<P: AsRef<Path>>(p: P) -> String {
+    p.as_ref().file_name().unwrap().to_str().unwrap().to_owned()
+}
+
+fn tree<P: AsRef<Path>>(p: P) -> io::Result<Tree<String>> {
+    let result = fs::read_dir(&p)
+        .unwrap()
+        .into_iter()
+        .filter_map(|e| e.ok())
+        .fold(Tree::root(label(p.as_ref().canonicalize().unwrap())),
+              |mut root, entry| {
+            let dir = entry.metadata().unwrap();
+            if dir.is_dir() {
+                root.push(tree(entry.path()).unwrap());
+            } else {
+                root.push(Tree::root(label(entry.path())));
+            }
+            root
+        });
+    Ok(result)
+}
+
+fn main() {
+    println!("{}", tree(".").unwrap());
+}

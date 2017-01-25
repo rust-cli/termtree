@@ -1,49 +1,53 @@
+use std::fmt::{self, Display};
+
 #[derive(Debug)]
-pub struct Tree<'a>(
-   pub  &'a str,
-   pub Vec<Tree<'a>>
-);
+pub struct Tree<D: Display>(D, Vec<Tree<D>>);
 
-impl<'a> Tree<'a> {
-    pub fn render(&self) -> String {
-        fn with_padding(b: &Tree, pad: &str) -> String {
-            format!(
-                "{}\n{}{} ",
-                &b.0.clone(),
-                pad,
-                if b.1.is_empty() { ' ' } else { '│' }
-            )
-        }
+impl<D: Display> Tree<D> {
+    pub fn new(root: D, leaves: Vec<Tree<D>>) -> Tree<D> {
+        Tree(root, leaves)
+    }
 
-        fn recurse(b: &Tree, pad: &str) -> String {
-            let mut s = String::new();
-            s.push_str(pad);
-            s.push_str(&with_padding(&b, pad));
-            s.push('\n');
-            let tail = b.1.iter().enumerate()
-                .fold(String::new(), |mut out, (i, b2)| {
-                    let last = i == b.1.len() - 1;
-                    let more = !b2.1.is_empty();
-                    let next_pad = format!(
-                        "{}{} ", pad, if last { ' ' } else { '│' }
-                    );
-                    let next = recurse(&b2, &next_pad);
-                    out.push_str(pad);
-                    out.push(if last { '└' } else { '├' });
-                    out.push('─');
-                    out.push(if more {'┬'} else {'─'});
-                    out.push(' ');
-                    out.push_str(&next[next_pad.len()..next.len()]);
-                    out
+    pub fn root(root: D) -> Tree<D> {
+        Tree(root, Vec::new())
+    }
+
+    pub fn push(&mut self, leaf: Tree<D>) -> &mut Self {
+        self.1.push(leaf);
+        self
+    }
+
+    fn rec(f: &mut fmt::Formatter, leaves: &Vec<Tree<D>>, spaces: Vec<bool>) -> fmt::Result {
+        for (i, leaf) in leaves.iter().enumerate() {
+            let last = i >= leaves.len() - 1;
+            let mut clone = spaces.clone();
+            // print single line
+            for s in &spaces {
+                if *s {
+                    let _ = write!(f, "    ");
+                } else {
+                    let _ = write!(f, "|   ");
                 }
-            );
-            s.push_str(&tail);
-            s
+            }
+            if last {
+                let _ = writeln!(f, "└── {}", leaf.0);
+            } else {
+                let _ = writeln!(f, "├── {}", leaf.0);
+            }
+
+            // recurse
+            if !leaf.1.is_empty() {
+                clone.push(last);
+                let _ = Self::rec(f, &leaf.1, clone);
+            }
         }
-        recurse(&self, "")
+        write!(f, "")
     }
 }
 
-#[test]
-fn it_works() {
+impl<D: Display> Display for Tree<D> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let _ = writeln!(f, "{}", self.0);
+        Self::rec(f, &self.1, Vec::new())
+    }
 }
