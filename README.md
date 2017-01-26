@@ -1,4 +1,4 @@
-# treeline
+# treeline [![Build Status](https://travis-ci.org/softprops/treeline.svg?branch=master)](https://travis-ci.org/softprops/treeline) [![Coverage Status](https://coveralls.io/repos/github/softprops/treeline/badge.svg)](https://coveralls.io/github/softprops/treeline)
 
 > a rust library for visualizing tree like data
 
