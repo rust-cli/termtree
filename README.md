@@ -2,7 +2,11 @@
 
 > a rust library for visualizing tree like data
 
+[API documentation](https://softprops.github.com/treeline)
+
 ## install
+
+...
 
 ## usage
 
