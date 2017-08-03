@@ -6,7 +6,12 @@
 
 ## install
 
-...
+Add the following to your `Cargo.toml`
+
+```toml
+[dependencies]
+treeline = "0.1"
+```
 
 ## usage
 
