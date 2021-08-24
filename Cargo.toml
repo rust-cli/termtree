@@ -8,3 +8,4 @@ homepage = "https://github.com/softprops/treeline"
 repository = "https://github.com/softprops/treeline"
 keywords = ["tree"]
 license = "MIT"
+edition = "2018"
