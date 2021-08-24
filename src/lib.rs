@@ -19,10 +19,11 @@ impl<D: Display> Tree<D> {
         self
     }
 
-    fn display_leaves(f: &mut fmt::Formatter,
-                      leaves: &Vec<Tree<D>>,
-                      spaces: Vec<bool>)
-                      -> fmt::Result {
+    fn display_leaves(
+        f: &mut fmt::Formatter,
+        leaves: &Vec<Tree<D>>,
+        spaces: Vec<bool>,
+    ) -> fmt::Result {
         for (i, leaf) in leaves.iter().enumerate() {
             let last = i >= leaves.len() - 1;
             let mut clone = spaces.clone();
@@ -68,18 +69,13 @@ mod tests {
 
     #[test]
     fn render_tree_with_leaves() {
-        let tree = Tree::new(
-            "foo", vec![
-               Tree::new(
-                   "bar", vec![
-                    Tree::root("baz")
-                   ]
-               )
-            ]
-        );
-        assert_eq!(format!("{}", tree), r#"foo
+        let tree = Tree::new("foo", vec![Tree::new("bar", vec![Tree::root("baz")])]);
+        assert_eq!(
+            format!("{}", tree),
+            r#"foo
 └── bar
     └── baz
-"#)
+"#
+        )
     }
 }
