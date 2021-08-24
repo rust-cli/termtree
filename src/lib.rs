@@ -30,21 +30,21 @@ impl<D: Display> Tree<D> {
             // print single line
             for s in &spaces {
                 if *s {
-                    let _ = write!(f, "    ");
+                    write!(f, "    ")?;
                 } else {
-                    let _ = write!(f, "|   ");
+                    write!(f, "|   ")?;
                 }
             }
             if last {
-                let _ = writeln!(f, "└── {}", leaf.0);
+                writeln!(f, "└── {}", leaf.0)?;
             } else {
-                let _ = writeln!(f, "├── {}", leaf.0);
+                writeln!(f, "├── {}", leaf.0)?;
             }
 
             // recurse
             if !leaf.1.is_empty() {
                 clone.push(last);
-                let _ = Self::display_leaves(f, &leaf.1, clone);
+                Self::display_leaves(f, &leaf.1, clone)?;
             }
         }
         write!(f, "")
@@ -53,7 +53,7 @@ impl<D: Display> Tree<D> {
 
 impl<D: Display> Display for Tree<D> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let _ = writeln!(f, "{}", self.0);
+        writeln!(f, "{}", self.0)?;
         Self::display_leaves(f, &self.1, Vec::new())
     }
 }
