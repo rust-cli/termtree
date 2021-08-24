@@ -26,7 +26,6 @@ impl<D: Display> Tree<D> {
     ) -> fmt::Result {
         for (i, leaf) in leaves.iter().enumerate() {
             let last = i >= leaves.len() - 1;
-            let mut clone = spaces.clone();
             // print single line
             for s in &spaces {
                 if *s {
@@ -43,6 +42,7 @@ impl<D: Display> Tree<D> {
 
             // recurse
             if !leaf.1.is_empty() {
+                let mut clone = spaces.clone();
                 clone.push(last);
                 Self::display_leaves(f, &leaf.1, clone)?;
             }
