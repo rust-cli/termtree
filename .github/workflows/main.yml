@@ -7,7 +7,7 @@ on:
       - "*.md"
     branches:
       - main
-      = master
+      - master
     tags:
       - "**"
   pull_request:
