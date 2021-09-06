@@ -1,0 +1,2 @@
+# https://github.com/rust-lang/rustfmt/blob/master/Configurations.md#fn_args_layout
+fn_args_layout = "Vertical"

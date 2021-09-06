@@ -6,7 +6,10 @@ use std::fmt::{self, Display};
 pub struct Tree<D: Display>(D, Vec<Tree<D>>);
 
 impl<D: Display> Tree<D> {
-    pub fn new(root: D, leaves: Vec<Tree<D>>) -> Tree<D> {
+    pub fn new(
+        root: D,
+        leaves: Vec<Tree<D>>,
+    ) -> Tree<D> {
         Tree(root, leaves)
     }
 
@@ -14,7 +17,10 @@ impl<D: Display> Tree<D> {
         Tree(root, Vec::new())
     }
 
-    pub fn push(&mut self, leaf: Tree<D>) -> &mut Self {
+    pub fn push(
+        &mut self,
+        leaf: Tree<D>,
+    ) -> &mut Self {
         self.1.push(leaf);
         self
     }
@@ -52,7 +58,10 @@ impl<D: Display> Tree<D> {
 }
 
 impl<D: Display> Display for Tree<D> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(
+        &self,
+        f: &mut fmt::Formatter,
+    ) -> fmt::Result {
         writeln!(f, "{}", self.0)?;
         Self::display_leaves(f, &self.1, Vec::new())
     }
