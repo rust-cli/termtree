@@ -27,7 +27,7 @@ impl<D: Display> Tree<D> {
 
     fn display_leaves(
         f: &mut fmt::Formatter,
-        leaves: &Vec<Tree<D>>,
+        leaves: &[Tree<D>],
         spaces: Vec<bool>,
     ) -> fmt::Result {
         for (i, leaf) in leaves.iter().enumerate() {
