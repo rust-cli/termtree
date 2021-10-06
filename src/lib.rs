@@ -3,19 +3,25 @@ use std::fmt::{self, Display};
 /// a simple recursive type which is able to render its
 /// components in a tree-like format
 #[derive(Debug)]
-pub struct Tree<D: Display>(D, Vec<Tree<D>>);
+pub struct Tree<D: Display> {
+    root: D,
+    leaves: Vec<Tree<D>>,
+}
 
 impl<D: Display> Tree<D> {
     pub fn new(root: D, leaves: Vec<Tree<D>>) -> Tree<D> {
-        Tree(root, leaves)
+        Tree { root, leaves }
     }
 
     pub fn root(root: D) -> Tree<D> {
-        Tree(root, Vec::new())
+        Tree {
+            root,
+            leaves: Vec::new(),
+        }
     }
 
     pub fn push(&mut self, leaf: Tree<D>) -> &mut Self {
-        self.1.push(leaf);
+        self.leaves.push(leaf);
         self
     }
 
@@ -35,16 +41,16 @@ impl<D: Display> Tree<D> {
                 }
             }
             if last {
-                writeln!(f, "└── {}", leaf.0)?;
+                writeln!(f, "└── {}", leaf.root)?;
             } else {
-                writeln!(f, "├── {}", leaf.0)?;
+                writeln!(f, "├── {}", leaf.root)?;
             }
 
             // recurse
-            if !leaf.1.is_empty() {
+            if !leaf.leaves.is_empty() {
                 let mut clone = spaces.clone();
                 clone.push(last);
-                Self::display_leaves(f, &leaf.1, clone)?;
+                Self::display_leaves(f, &leaf.leaves, clone)?;
             }
         }
         write!(f, "")
@@ -53,8 +59,8 @@ impl<D: Display> Tree<D> {
 
 impl<D: Display> Display for Tree<D> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        writeln!(f, "{}", self.0)?;
-        Self::display_leaves(f, &self.1, Vec::new())
+        writeln!(f, "{}", self.root)?;
+        Self::display_leaves(f, &self.leaves, Vec::new())
     }
 }
 
