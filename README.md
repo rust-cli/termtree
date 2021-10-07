@@ -1,21 +1,12 @@
-# treeline [![Main](https://github.com/softprops/treeline/actions/workflows/main.yml/badge.svg)](https://github.com/softprops/treeline/actions/workflows/main.yml)
+# termtree [![Main](https://github.com/rust-cli/termtree/actions/workflows/main.yml/badge.svg)](https://github.com/rust-cli/termtree/actions/workflows/main.yml)
 
-> a rust library for visualizing tree like data
+> Visualize tree-like data on the command-line
 
-[API documentation](https://softprops.github.com/treeline)
+[API documentation](https://docs.rs/termtree)
 
-## install
+## Example
 
-Add the following to your `Cargo.toml`
-
-```toml
-[dependencies]
-treeline = "0.1"
-```
-
-## usage
-
-an example program is provided under the "examples" directory to mimic the `tree(1)`
+An example program is provided under the "examples" directory to mimic the `tree(1)`
 linux program
 
 ```bash
@@ -26,16 +17,16 @@ target
 └── debug
     ├── .cargo-lock
     ├── .fingerprint
-    |   └── treeline-21a5bdbd42e0b6da
+    |   └── termtree-21a5bdbd42e0b6da
     |       ├── dep-example-tree
-    |       ├── dep-lib-treeline
+    |       ├── dep-lib-termtree
     |       ├── example-tree
     |       ├── example-tree.json
-    |       ├── lib-treeline
-    |       └── lib-treeline.json
+    |       ├── lib-termtree
+    |       └── lib-termtree.json
     ├── build
     ├── deps
-    |   └── libtreeline.rlib
+    |   └── libtermtree.rlib
     ├── examples
     |   ├── tree
     |   └── tree.dSYM
@@ -44,8 +35,17 @@ target
     |           └── Resources
     |               └── DWARF
     |                   └── tree
-    ├── libtreeline.rlib
+    ├── libtermtree.rlib
     └── native
 ```
 
-Doug Tangren (softprops) 2017
+## Related Crates
+
+- [`treeline`](https://crates.io/crates/treeline): termtree was forked from this.
+- [`tree_decorator`](https://crates.io/crates/tree_decorator)
+- [`xtree`](https://crates.io/crates/xtree)
+- [`ptree`](https://crates.io/crates/ptree)
+
+## License
+
+Licensed under MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)

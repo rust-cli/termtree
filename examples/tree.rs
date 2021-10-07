@@ -1,6 +1,4 @@
-extern crate treeline;
-
-use treeline::Tree;
+use termtree::Tree;
 
 use std::path::Path;
 use std::{env, fs, io};
