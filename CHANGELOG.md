@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+#### Features
+
+- Add leaves via `Extend::extend`
+- Opt-in multi-line item support
+
 ## [0.2.0] - 2021-10-07
 
 Forked from `treeline`
