@@ -2,7 +2,7 @@
 
 repository:
   description: Visualize tree-like data on the command-line
-  homepage: docs.rs/termtree
+  homepage: https://docs.rs/termtree
   topics: rust cli
   has_issues: true
   has_projects: false
