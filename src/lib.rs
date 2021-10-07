@@ -92,6 +92,18 @@ impl<D: Display> Tree<D> {
     }
 }
 
+impl<D: Display> Extend<D> for Tree<D> {
+    fn extend<T: IntoIterator<Item = D>>(&mut self, iter: T) {
+        self.leaves.extend(iter.into_iter().map(Tree::root))
+    }
+}
+
+impl<D: Display> Extend<Tree<D>> for Tree<D> {
+    fn extend<T: IntoIterator<Item = Tree<D>>>(&mut self, iter: T) {
+        self.leaves.extend(iter)
+    }
+}
+
 impl<D: Display> Display for Tree<D> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         writeln!(f, "{}", self.root)?;
