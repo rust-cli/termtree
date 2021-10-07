@@ -8,7 +8,7 @@ fn label<P: AsRef<Path>>(p: P) -> String {
 }
 
 fn tree<P: AsRef<Path>>(p: P) -> io::Result<Tree<String>> {
-    let result = fs::read_dir(&p)?.into_iter().filter_map(|e| e.ok()).fold(
+    let result = fs::read_dir(&p)?.filter_map(|e| e.ok()).fold(
         Tree::root(label(p.as_ref().canonicalize()?)),
         |mut root, entry| {
             let dir = entry.metadata().unwrap();
