@@ -1,7 +1,7 @@
 [package]
 name = "termtree"
 version = "0.2.0"
-description = "Visuale tree-like data on the command-line"
+description = "Visualize tree-like data on the command-line"
 documentation = "https://docs.rs/termtree"
 homepage = "https://github.com/rust-cli/termtree"
 repository = "https://github.com/rust-cli/termtree"
