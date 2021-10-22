@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+#### Fixes
+
+- Do not overflow the stack
+
 ## [0.2.1] - 2021-10-07
 
 #### Features
