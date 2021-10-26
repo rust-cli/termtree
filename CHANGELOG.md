@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+#### Features
+
+- Provide customization of tree glyphs
+
 ## [0.2.2] - 2021-10-22
 
 #### Fixes
