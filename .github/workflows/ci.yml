@@ -8,14 +8,14 @@ on:
     - "!/LICENSE-*"
   push:
     branches:
-    - master
+    - main
     paths:
     - '**'
     - '!/*.md'
     - '!/docs/**'
     - "!/LICENSE-*"
   schedule:
-  - cron: '16 16 */2 * *'
+  - cron: '16 16 16 * *'
 jobs:
   ci:
     name: CI

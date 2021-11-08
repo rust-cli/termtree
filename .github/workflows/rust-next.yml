@@ -1,16 +1,7 @@
 name: rust-next
 on:
-  push:
-    branches:
-    - master
-    paths:
-    - '**'
-    - '!/*.md'
-    - '!/docs/**'
-    - "!/LICENSE-*"
   schedule:
   - cron: '16 17 16 * *'
-  - cron: '16 17 28 * *'
 jobs:
   test:
     name: Test
