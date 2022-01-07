@@ -170,7 +170,7 @@ impl GlyphPalette {
             last_item: "└",
             item_indent: "── ",
 
-            middle_skip: "|",
+            middle_skip: "│",
             last_skip: " ",
             skip_indent: "   ",
         }
@@ -229,7 +229,7 @@ mod tests {
             format!("{}", tree),
             r#"foo
 ├── hello
-|   world
+│   world
 └── goodbye
     world
 "#
