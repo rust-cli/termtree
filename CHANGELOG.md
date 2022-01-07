@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+#### Fixes
+
+- Adjusted to a cleaner looking continuous middle skip
+
 ## [0.2.3] - 2021-10-26
 
 #### Features
