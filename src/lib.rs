@@ -13,22 +13,18 @@ pub struct Tree<D: Display> {
 }
 
 impl<D: Display> Tree<D> {
-    pub fn new(root: D, leaves: Vec<Tree<D>>) -> Tree<D> {
-        Tree {
-            root,
-            leaves,
-            multiline: false,
-            glyphs: GlyphPalette::new(),
-        }
-    }
-
-    pub fn root(root: D) -> Tree<D> {
+    pub fn new(root: D) -> Self {
         Tree {
             root,
             leaves: Vec::new(),
             multiline: false,
             glyphs: GlyphPalette::new(),
         }
+    }
+
+    pub fn with_leaves(mut self, leaves: impl IntoIterator<Item = impl Into<Tree<D>>>) -> Self {
+        self.leaves = leaves.into_iter().map(Into::into).collect();
+        self
     }
 
     /// Ensure all lines for `root` are indented
@@ -55,15 +51,21 @@ impl<D: Display> Tree<D> {
         self
     }
 
-    pub fn push(&mut self, leaf: Tree<D>) -> &mut Self {
-        self.leaves.push(leaf);
+    pub fn push(&mut self, leaf: impl Into<Tree<D>>) -> &mut Self {
+        self.leaves.push(leaf.into());
         self
+    }
+}
+
+impl<D: Display> From<D> for Tree<D> {
+    fn from(inner: D) -> Self {
+        Self::new(inner)
     }
 }
 
 impl<D: Display> Extend<D> for Tree<D> {
     fn extend<T: IntoIterator<Item = D>>(&mut self, iter: T) {
-        self.leaves.extend(iter.into_iter().map(Tree::root))
+        self.leaves.extend(iter.into_iter().map(Into::into))
     }
 }
 
@@ -188,13 +190,13 @@ mod tests {
     use super::Tree;
     #[test]
     fn render_tree_root() {
-        let tree = Tree::root("foo");
+        let tree = Tree::new("foo");
         assert_eq!(format!("{}", tree), "foo\n")
     }
 
     #[test]
     fn render_tree_with_leaves() {
-        let tree = Tree::new("foo", vec![Tree::new("bar", vec![Tree::root("baz")])]);
+        let tree = Tree::new("foo").with_leaves([Tree::new("bar").with_leaves(["baz"])]);
         assert_eq!(
             format!("{}", tree),
             r#"foo
@@ -206,7 +208,7 @@ mod tests {
 
     #[test]
     fn render_tree_with_multiple_leaves() {
-        let tree = Tree::new("foo", vec![Tree::root("bar"), Tree::root("baz")]);
+        let tree = Tree::new("foo").with_leaves(["bar", "baz"]);
         assert_eq!(
             format!("{}", tree),
             r#"foo
@@ -218,13 +220,10 @@ mod tests {
 
     #[test]
     fn render_tree_with_multiline_leaf() {
-        let tree = Tree::new(
-            "foo",
-            vec![
-                Tree::root("hello\nworld").with_multiline(true),
-                Tree::root("goodbye\nworld").with_multiline(true),
-            ],
-        );
+        let tree = Tree::new("foo").with_leaves([
+            Tree::new("hello\nworld").with_multiline(true),
+            Tree::new("goodbye\nworld").with_multiline(true),
+        ]);
         assert_eq!(
             format!("{}", tree),
             r#"foo
