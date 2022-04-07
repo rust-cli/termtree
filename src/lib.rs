@@ -7,7 +7,7 @@ use std::rc::Rc;
 
 /// a simple recursive type which is able to render its
 /// components in a tree-like format
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Tree<D: Display> {
     root: D,
     leaves: Vec<Tree<D>>,
