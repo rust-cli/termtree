@@ -9,8 +9,8 @@ use std::rc::Rc;
 /// components in a tree-like format
 #[derive(Debug, Clone)]
 pub struct Tree<D: Display> {
-    root: D,
-    leaves: Vec<Tree<D>>,
+    pub root: D,
+    pub leaves: Vec<Tree<D>>,
     multiline: bool,
     glyphs: GlyphPalette,
 }
@@ -58,22 +58,6 @@ impl<D: Display> Tree<D> {
 }
 
 impl<D: Display> Tree<D> {
-    pub fn root(&self) -> &D {
-        &self.root
-    }
-
-    pub fn root_mut(&mut self) -> &mut D {
-        &mut self.root
-    }
-
-    pub fn leaves(&self) -> impl Iterator<Item = &Tree<D>> {
-        self.leaves.iter()
-    }
-
-    pub fn leaves_mut(&mut self) -> impl Iterator<Item = &mut Tree<D>> {
-        self.leaves.iter_mut()
-    }
-
     pub fn push(&mut self, leaf: impl Into<Tree<D>>) -> &mut Self {
         self.leaves.push(leaf.into());
         self
