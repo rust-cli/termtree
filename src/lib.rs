@@ -1,10 +1,13 @@
+#[cfg(test)]
+mod tests;
+
 use std::collections::VecDeque;
 use std::fmt::{self, Display};
 use std::rc::Rc;
 
 /// a simple recursive type which is able to render its
 /// components in a tree-like format
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Tree<D: Display> {
     root: D,
     leaves: Vec<Tree<D>>,
@@ -13,16 +16,7 @@ pub struct Tree<D: Display> {
 }
 
 impl<D: Display> Tree<D> {
-    pub fn new(root: D, leaves: Vec<Tree<D>>) -> Tree<D> {
-        Tree {
-            root,
-            leaves,
-            multiline: false,
-            glyphs: GlyphPalette::new(),
-        }
-    }
-
-    pub fn root(root: D) -> Tree<D> {
+    pub fn new(root: D) -> Self {
         Tree {
             root,
             leaves: Vec::new(),
@@ -31,14 +25,13 @@ impl<D: Display> Tree<D> {
         }
     }
 
-    /// Ensure all lines for `root` are indented
-    pub fn with_multiline(mut self, yes: bool) -> Self {
-        self.multiline = yes;
+    pub fn with_leaves(mut self, leaves: impl IntoIterator<Item = impl Into<Tree<D>>>) -> Self {
+        self.leaves = leaves.into_iter().map(Into::into).collect();
         self
     }
 
     /// Ensure all lines for `root` are indented
-    pub fn set_multiline(&mut self, yes: bool) -> &mut Self {
+    pub fn with_multiline(mut self, yes: bool) -> Self {
         self.multiline = yes;
         self
     }
@@ -48,22 +41,54 @@ impl<D: Display> Tree<D> {
         self.glyphs = glyphs;
         self
     }
+}
+
+impl<D: Display> Tree<D> {
+    /// Ensure all lines for `root` are indented
+    pub fn set_multiline(&mut self, yes: bool) -> &mut Self {
+        self.multiline = yes;
+        self
+    }
 
     /// Customize the rendering of this node
     pub fn set_glyphs(&mut self, glyphs: GlyphPalette) -> &mut Self {
         self.glyphs = glyphs;
         self
     }
+}
 
-    pub fn push(&mut self, leaf: Tree<D>) -> &mut Self {
-        self.leaves.push(leaf);
+impl<D: Display> Tree<D> {
+    pub fn root(&self) -> &D {
+        &self.root
+    }
+
+    pub fn root_mut(&mut self) -> &mut D {
+        &mut self.root
+    }
+
+    pub fn leaves(&self) -> impl Iterator<Item = &Tree<D>> {
+        self.leaves.iter()
+    }
+
+    pub fn leaves_mut(&mut self) -> impl Iterator<Item = &mut Tree<D>> {
+        self.leaves.iter_mut()
+    }
+
+    pub fn push(&mut self, leaf: impl Into<Tree<D>>) -> &mut Self {
+        self.leaves.push(leaf.into());
         self
+    }
+}
+
+impl<D: Display> From<D> for Tree<D> {
+    fn from(inner: D) -> Self {
+        Self::new(inner)
     }
 }
 
 impl<D: Display> Extend<D> for Tree<D> {
     fn extend<T: IntoIterator<Item = D>>(&mut self, iter: T) {
-        self.leaves.extend(iter.into_iter().map(Tree::root))
+        self.leaves.extend(iter.into_iter().map(Into::into))
     }
 }
 
@@ -180,59 +205,5 @@ impl GlyphPalette {
 impl Default for GlyphPalette {
     fn default() -> Self {
         Self::new()
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::Tree;
-    #[test]
-    fn render_tree_root() {
-        let tree = Tree::root("foo");
-        assert_eq!(format!("{}", tree), "foo\n")
-    }
-
-    #[test]
-    fn render_tree_with_leaves() {
-        let tree = Tree::new("foo", vec![Tree::new("bar", vec![Tree::root("baz")])]);
-        assert_eq!(
-            format!("{}", tree),
-            r#"foo
-└── bar
-    └── baz
-"#
-        )
-    }
-
-    #[test]
-    fn render_tree_with_multiple_leaves() {
-        let tree = Tree::new("foo", vec![Tree::root("bar"), Tree::root("baz")]);
-        assert_eq!(
-            format!("{}", tree),
-            r#"foo
-├── bar
-└── baz
-"#
-        )
-    }
-
-    #[test]
-    fn render_tree_with_multiline_leaf() {
-        let tree = Tree::new(
-            "foo",
-            vec![
-                Tree::root("hello\nworld").with_multiline(true),
-                Tree::root("goodbye\nworld").with_multiline(true),
-            ],
-        );
-        assert_eq!(
-            format!("{}", tree),
-            r#"foo
-├── hello
-│   world
-└── goodbye
-    world
-"#
-        )
     }
 }

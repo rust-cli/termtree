@@ -9,13 +9,13 @@ fn label<P: AsRef<Path>>(p: P) -> String {
 
 fn tree<P: AsRef<Path>>(p: P) -> io::Result<Tree<String>> {
     let result = fs::read_dir(&p)?.filter_map(|e| e.ok()).fold(
-        Tree::root(label(p.as_ref().canonicalize()?)),
+        Tree::new(label(p.as_ref().canonicalize()?)),
         |mut root, entry| {
             let dir = entry.metadata().unwrap();
             if dir.is_dir() {
                 root.push(tree(entry.path()).unwrap());
             } else {
-                root.push(Tree::root(label(entry.path())));
+                root.push(Tree::new(label(entry.path())));
             }
             root
         },
