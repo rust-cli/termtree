@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+### Compatibility
+
+- MSRV bumped to 1.54.0
+- `Tree::new` removed
+- `Tree::root` renamed to `Tree::new`
+
+### Features
+
+- Accessors for roots and leaves
+- Shortcuts for building up a `Tree`
+
 ## [0.2.4] - 2022-01-07
 
 #### Fixes
