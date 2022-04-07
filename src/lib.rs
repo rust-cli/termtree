@@ -33,15 +33,17 @@ impl<D: Display> Tree<D> {
         self
     }
 
-    /// Ensure all lines for `root` are indented
-    pub fn set_multiline(&mut self, yes: bool) -> &mut Self {
-        self.multiline = yes;
-        self
-    }
-
     /// Customize the rendering of this node
     pub fn with_glyphs(mut self, glyphs: GlyphPalette) -> Self {
         self.glyphs = glyphs;
+        self
+    }
+}
+
+impl<D: Display> Tree<D> {
+    /// Ensure all lines for `root` are indented
+    pub fn set_multiline(&mut self, yes: bool) -> &mut Self {
+        self.multiline = yes;
         self
     }
 
@@ -50,7 +52,9 @@ impl<D: Display> Tree<D> {
         self.glyphs = glyphs;
         self
     }
+}
 
+impl<D: Display> Tree<D> {
     pub fn push(&mut self, leaf: impl Into<Tree<D>>) -> &mut Self {
         self.leaves.push(leaf.into());
         self
