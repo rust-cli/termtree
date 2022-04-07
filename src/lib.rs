@@ -55,6 +55,14 @@ impl<D: Display> Tree<D> {
         self.leaves.push(leaf.into());
         self
     }
+
+    pub fn leaves(&self) -> impl Iterator<Item = &Tree<D>> {
+        self.leaves.iter()
+    }
+
+    pub fn leaves_mut(&mut self) -> impl Iterator<Item = &mut Tree<D>> {
+        self.leaves.iter_mut()
+    }
 }
 
 impl<D: Display> From<D> for Tree<D> {
