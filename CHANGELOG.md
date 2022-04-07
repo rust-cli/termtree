@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+### Compatibility
+
+- Removed functions in place of direct member access
+
+### Features
+
+- Directly expose `root` and `leaves`
+
 ## [0.3.0] - 2022-04-07
 
 ### Compatibility
