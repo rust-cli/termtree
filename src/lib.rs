@@ -1,3 +1,5 @@
+#![allow(clippy::branches_sharing_code)]
+
 #[cfg(test)]
 mod tests;
 
