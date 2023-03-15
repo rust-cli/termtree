@@ -1,3 +1,5 @@
+#![allow(clippy::branches_sharing_code)]
+
 #[cfg(test)]
 mod tests;
 
@@ -84,7 +86,8 @@ impl<D: Display> Extend<Tree<D>> for Tree<D> {
 
 impl<D: Display> Display for Tree<D> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        writeln!(f, "{}", self.root)?;
+        self.root.fmt(f)?; // Pass along `f.alternate()`
+        writeln!(f)?;
         let mut queue = DisplauQueue::new();
         let no_space = Rc::new(Vec::new());
         enqueue_leaves(&mut queue, self, no_space);
@@ -110,29 +113,43 @@ impl<D: Display> Display for Tree<D> {
                 debug_assert_eq!(prefix.0.chars().count(), rest_prefix.0.chars().count());
                 debug_assert_eq!(prefix.1.chars().count(), rest_prefix.1.chars().count());
 
-                let root = leaf.root.to_string();
+                let root = if f.alternate() {
+                    format!("{:#}", leaf.root)
+                } else {
+                    format!("{:}", leaf.root)
+                };
                 for line in root.lines() {
                     // print single line
                     for s in spaces.as_slice() {
                         if *s {
-                            write!(f, "{}{}", self.glyphs.last_skip, self.glyphs.skip_indent)?;
+                            self.glyphs.last_skip.fmt(f)?;
+                            self.glyphs.skip_indent.fmt(f)?;
                         } else {
-                            write!(f, "{}{}", self.glyphs.middle_skip, self.glyphs.skip_indent)?;
+                            self.glyphs.middle_skip.fmt(f)?;
+                            self.glyphs.skip_indent.fmt(f)?;
                         }
                     }
-                    writeln!(f, "{}{}{}", prefix.0, prefix.1, line)?;
+                    prefix.0.fmt(f)?;
+                    prefix.1.fmt(f)?;
+                    line.fmt(f)?;
+                    writeln!(f)?;
                     prefix = rest_prefix;
                 }
             } else {
                 // print single line
                 for s in spaces.as_slice() {
                     if *s {
-                        write!(f, "{}{}", self.glyphs.last_skip, self.glyphs.skip_indent)?;
+                        self.glyphs.last_skip.fmt(f)?;
+                        self.glyphs.skip_indent.fmt(f)?;
                     } else {
-                        write!(f, "{}{}", self.glyphs.middle_skip, self.glyphs.skip_indent)?;
+                        self.glyphs.middle_skip.fmt(f)?;
+                        self.glyphs.skip_indent.fmt(f)?;
                     }
                 }
-                writeln!(f, "{}{}{}", prefix.0, prefix.1, leaf.root)?;
+                prefix.0.fmt(f)?;
+                prefix.1.fmt(f)?;
+                leaf.root.fmt(f)?; // Pass along `f.alternate()`
+                writeln!(f)?;
             }
 
             // recurse
