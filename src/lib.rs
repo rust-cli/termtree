@@ -1,4 +1,5 @@
 #![allow(clippy::branches_sharing_code)]
+#![cfg_attr(docsrs, feature(doc_auto_cfg))]
 
 #[cfg(test)]
 mod tests;
