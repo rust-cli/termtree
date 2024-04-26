@@ -1,6 +1,6 @@
 //! Make the output of `cargo test` prettier in tree style.
 //! To see the complete demo coupling with rust-script, you can refer to
-//! https://users.rust-lang.org/t/cargo-test-output-with-indentation/100149/2
+//! <https://users.rust-lang.org/t/cargo-test-output-with-indentation/100149/2>
 
 use std::collections::{btree_map::Entry, BTreeMap};
 use termtree::{GlyphPalette, Tree};
@@ -66,7 +66,7 @@ fn make_node<'s>(
         }
         Entry::Occupied(mut btree) => {
             if let Node::Path(btree) = btree.get_mut() {
-                make_node(split, status, btree, next)
+                make_node(split, status, btree, next);
             }
         }
     }
