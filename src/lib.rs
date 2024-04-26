@@ -1,5 +1,6 @@
-#![allow(clippy::branches_sharing_code)]
 #![cfg_attr(docsrs, feature(doc_auto_cfg))]
+#![warn(clippy::print_stderr)]
+#![warn(clippy::print_stdout)]
 
 #[cfg(test)]
 mod tests;
@@ -75,18 +76,18 @@ impl<D: Display> From<D> for Tree<D> {
 
 impl<D: Display> Extend<D> for Tree<D> {
     fn extend<T: IntoIterator<Item = D>>(&mut self, iter: T) {
-        self.leaves.extend(iter.into_iter().map(Into::into))
+        self.leaves.extend(iter.into_iter().map(Into::into));
     }
 }
 
 impl<D: Display> Extend<Tree<D>> for Tree<D> {
     fn extend<T: IntoIterator<Item = Tree<D>>>(&mut self, iter: T) {
-        self.leaves.extend(iter)
+        self.leaves.extend(iter);
     }
 }
 
 impl<D: Display> Display for Tree<D> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.root.fmt(f)?; // Pass along `f.alternate()`
         writeln!(f)?;
         let mut queue = DisplauQueue::new();

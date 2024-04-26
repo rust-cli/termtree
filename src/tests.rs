@@ -3,7 +3,7 @@ use super::*;
 #[test]
 fn render_tree_root() {
     let tree = Tree::new("foo");
-    assert_eq!(format!("{}", tree), "foo\n")
+    assert_eq!(format!("{}", tree), "foo\n");
 }
 
 #[test]
@@ -15,7 +15,7 @@ fn render_tree_with_leaves() {
 └── bar
     └── baz
 "#
-    )
+    );
 }
 
 #[test]
@@ -27,7 +27,7 @@ fn render_tree_with_multiple_leaves() {
 ├── bar
 └── baz
 "#
-    )
+    );
 }
 
 #[test]
@@ -44,5 +44,5 @@ fn render_tree_with_multiline_leaf() {
 └── goodbye
     world
 "#
-    )
+    );
 }
