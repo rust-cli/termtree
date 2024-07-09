@@ -106,17 +106,17 @@ node 1
 ├── node 1.1
 ├── node 1.2
 ├── node 1.3
-[mskip][iskip  ](mid  )(indent )node 1.3.1
-[mskip][iskip  ](mid  )(indent )node 1.3.2
-[mskip][iskip  ](last )(indent )node 1.3.3
-[mskip][iskip  ][lskip][iskip  ]├── node 1.3.3.1
-[mskip][iskip  ][lskip][iskip  ]└── node 1.3.3.2
+│   (mid  )(indent )node 1.3.1
+│   (mid  )(indent )node 1.3.2
+│   (last )(indent )node 1.3.3
+│   (lskip)(iskip  )├── node 1.3.3.1
+│   (lskip)(iskip  )└── node 1.3.3.2
 └── node 1.4
-[lskip][iskip  ]├── node 1.4.1
-[lskip][iskip  ]├── node 1.4.2
-[lskip][iskip  ]└── node 1.4.3
-[lskip][iskip  ][lskip][iskip  ]├── node 1.4.3.1
-[lskip][iskip  ][lskip][iskip  ]└── node 1.4.3.2
+    ├── node 1.4.1
+    ├── node 1.4.2
+    └── node 1.4.3
+        ├── node 1.4.3.1
+        └── node 1.4.3.2
 
 "#]]
     );

@@ -123,13 +123,8 @@ impl<D: Display> Display for Tree<D> {
                 for line in root.lines() {
                     // print single line
                     for s in spaces.as_slice() {
-                        if *s {
-                            self.glyphs.last_skip.fmt(f)?;
-                            self.glyphs.skip_indent.fmt(f)?;
-                        } else {
-                            self.glyphs.middle_skip.fmt(f)?;
-                            self.glyphs.skip_indent.fmt(f)?;
-                        }
+                        s.skip.fmt(f)?;
+                        s.indent.fmt(f)?;
                     }
                     prefix.0.fmt(f)?;
                     prefix.1.fmt(f)?;
@@ -140,13 +135,8 @@ impl<D: Display> Display for Tree<D> {
             } else {
                 // print single line
                 for s in spaces.as_slice() {
-                    if *s {
-                        self.glyphs.last_skip.fmt(f)?;
-                        self.glyphs.skip_indent.fmt(f)?;
-                    } else {
-                        self.glyphs.middle_skip.fmt(f)?;
-                        self.glyphs.skip_indent.fmt(f)?;
-                    }
+                    s.skip.fmt(f)?;
+                    s.indent.fmt(f)?;
                 }
                 prefix.0.fmt(f)?;
                 prefix.1.fmt(f)?;
@@ -156,9 +146,13 @@ impl<D: Display> Display for Tree<D> {
 
             // recurse
             if !leaf.leaves.is_empty() {
-                let s: &Vec<bool> = &spaces;
+                let s: &Vec<SpacePalette> = &spaces;
                 let mut child_spaces = s.clone();
-                child_spaces.push(last);
+                child_spaces.push(if last {
+                    leaf.glyphs.last_space()
+                } else {
+                    leaf.glyphs.middle_space()
+                });
                 let child_spaces = Rc::new(child_spaces);
                 enqueue_leaves(&mut queue, leaf, child_spaces);
             }
@@ -167,17 +161,23 @@ impl<D: Display> Display for Tree<D> {
     }
 }
 
-type DisplauQueue<'t, D> = VecDeque<(bool, &'t Tree<D>, Rc<Vec<bool>>)>;
+type DisplauQueue<'t, D> = VecDeque<(bool, &'t Tree<D>, Rc<Vec<SpacePalette>>)>;
 
 fn enqueue_leaves<'t, D: Display>(
     queue: &mut DisplauQueue<'t, D>,
     parent: &'t Tree<D>,
-    spaces: Rc<Vec<bool>>,
+    spaces: Rc<Vec<SpacePalette>>,
 ) {
     for (i, leaf) in parent.leaves.iter().rev().enumerate() {
         let last = i == 0;
         queue.push_front((last, leaf, spaces.clone()));
     }
+}
+
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+struct SpacePalette {
+    skip: &'static str,
+    indent: &'static str,
 }
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
@@ -201,6 +201,20 @@ impl GlyphPalette {
             middle_skip: "│",
             last_skip: " ",
             skip_indent: "   ",
+        }
+    }
+
+    fn middle_space(&self) -> SpacePalette {
+        SpacePalette {
+            skip: self.middle_skip,
+            indent: self.skip_indent,
+        }
+    }
+
+    fn last_space(&self) -> SpacePalette {
+        SpacePalette {
+            skip: self.last_skip,
+            indent: self.skip_indent,
         }
     }
 }
