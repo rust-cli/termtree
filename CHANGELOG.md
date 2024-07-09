@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+### Compatibility
+
+- MSRV bumped to 1.74.0
+
+### Breaking Changes
+
+- Inherit glyphs from the parent node
+
+### Features
+
+- Inherit glyphs from the parent node
+
+### Fixes
+
+- Track glyphs correctly for "skip" lines
+
 ## [0.4.1] - 2023-03-14
 
 ### Fixes
