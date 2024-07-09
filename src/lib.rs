@@ -16,7 +16,7 @@ pub struct Tree<D: Display> {
     pub root: D,
     pub leaves: Vec<Tree<D>>,
     multiline: bool,
-    glyphs: GlyphPalette,
+    glyphs: Option<GlyphPalette>,
 }
 
 impl<D: Display> Tree<D> {
@@ -25,7 +25,7 @@ impl<D: Display> Tree<D> {
             root,
             leaves: Vec::new(),
             multiline: false,
-            glyphs: GlyphPalette::new(),
+            glyphs: None,
         }
     }
 
@@ -42,7 +42,7 @@ impl<D: Display> Tree<D> {
 
     /// Customize the rendering of this node
     pub fn with_glyphs(mut self, glyphs: GlyphPalette) -> Self {
-        self.glyphs = glyphs;
+        self.glyphs = Some(glyphs);
         self
     }
 }
@@ -56,7 +56,7 @@ impl<D: Display> Tree<D> {
 
     /// Customize the rendering of this node
     pub fn set_glyphs(&mut self, glyphs: GlyphPalette) -> &mut Self {
-        self.glyphs = glyphs;
+        self.glyphs = Some(glyphs);
         self
     }
 }
@@ -92,25 +92,27 @@ impl<D: Display> Display for Tree<D> {
         writeln!(f)?;
         let mut queue = DisplauQueue::new();
         let no_space = Rc::new(Vec::new());
-        enqueue_leaves(&mut queue, self, no_space);
-        while let Some((last, leaf, spaces)) = queue.pop_front() {
+        let default_glyphs = GlyphPalette::new();
+        let glyphs = self.glyphs.as_ref().unwrap_or(&default_glyphs);
+        enqueue_leaves(&mut queue, self, glyphs, no_space);
+        while let Some((last, leaf, glyphs, spaces)) = queue.pop_front() {
             let mut prefix = (
                 if last {
-                    leaf.glyphs.last_item
+                    glyphs.last_item
                 } else {
-                    leaf.glyphs.middle_item
+                    glyphs.middle_item
                 },
-                leaf.glyphs.item_indent,
+                glyphs.item_indent,
             );
 
             if leaf.multiline {
                 let rest_prefix = (
                     if last {
-                        leaf.glyphs.last_skip
+                        glyphs.last_skip
                     } else {
-                        leaf.glyphs.middle_skip
+                        glyphs.middle_skip
                     },
-                    leaf.glyphs.skip_indent,
+                    glyphs.skip_indent,
                 );
                 debug_assert_eq!(prefix.0.chars().count(), rest_prefix.0.chars().count());
                 debug_assert_eq!(prefix.1.chars().count(), rest_prefix.1.chars().count());
@@ -149,28 +151,30 @@ impl<D: Display> Display for Tree<D> {
                 let s: &Vec<SpacePalette> = &spaces;
                 let mut child_spaces = s.clone();
                 child_spaces.push(if last {
-                    leaf.glyphs.last_space()
+                    glyphs.last_space()
                 } else {
-                    leaf.glyphs.middle_space()
+                    glyphs.middle_space()
                 });
                 let child_spaces = Rc::new(child_spaces);
-                enqueue_leaves(&mut queue, leaf, child_spaces);
+                enqueue_leaves(&mut queue, leaf, glyphs, child_spaces);
             }
         }
         Ok(())
     }
 }
 
-type DisplauQueue<'t, D> = VecDeque<(bool, &'t Tree<D>, Rc<Vec<SpacePalette>>)>;
+type DisplauQueue<'t, D> = VecDeque<(bool, &'t Tree<D>, &'t GlyphPalette, Rc<Vec<SpacePalette>>)>;
 
 fn enqueue_leaves<'t, D: Display>(
     queue: &mut DisplauQueue<'t, D>,
     parent: &'t Tree<D>,
+    parent_glyphs: &'t GlyphPalette,
     spaces: Rc<Vec<SpacePalette>>,
 ) {
     for (i, leaf) in parent.leaves.iter().rev().enumerate() {
         let last = i == 0;
-        queue.push_front((last, leaf, spaces.clone()));
+        let glyphs = leaf.glyphs.as_ref().unwrap_or(parent_glyphs);
+        queue.push_front((last, leaf, glyphs, spaces.clone()));
     }
 }
 
