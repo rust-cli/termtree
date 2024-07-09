@@ -88,7 +88,7 @@ zero_sized_map_values = "warn"
 
 [package]
 name = "termtree"
-version = "0.4.1"
+version = "0.5.0"
 description = "Visualize tree-like data on the command-line"
 documentation = "https://docs.rs/termtree"
 homepage = "https://github.com/rust-cli/termtree"
