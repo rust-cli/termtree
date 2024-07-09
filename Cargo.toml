@@ -116,6 +116,7 @@ pre-release-replacements = [
 [dependencies]
 
 [dev-dependencies]
+snapbox = "0.6.10"
 
 [lints]
 workspace = true
