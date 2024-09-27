@@ -26,7 +26,7 @@ fn tree<P: AsRef<Path>>(p: P) -> io::Result<Tree<String>> {
 fn main() {
     let dir = env::args().nth(1).unwrap_or_else(|| String::from("."));
     match tree(dir) {
-        Ok(tree) => println!("{}", tree),
-        Err(err) => println!("error: {}", err),
+        Ok(tree) => println!("{tree}"),
+        Err(err) => println!("error: {err}"),
     }
 }
