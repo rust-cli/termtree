@@ -228,3 +228,7 @@ impl Default for GlyphPalette {
         Self::new()
     }
 }
+
+#[doc = include_str!("../README.md")]
+#[cfg(doctest)]
+pub struct ReadmeDoctests;
