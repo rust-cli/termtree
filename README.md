@@ -1,4 +1,4 @@
-# termtree [![Main](https://github.com/rust-cli/termtree/actions/workflows/main.yml/badge.svg)](https://github.com/rust-cli/termtree/actions/workflows/main.yml)
+# termtree [![Main](https://github.com/rust-cli/termtree/actions/workflows/ci.yml/badge.svg)](https://github.com/rust-cli/termtree/actions/workflows/ci.yml)
 
 > Visualize tree-like data on the command-line
 
