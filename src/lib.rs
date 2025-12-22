@@ -9,7 +9,7 @@ use std::collections::VecDeque;
 use std::fmt::{self, Display};
 use std::rc::Rc;
 
-/// a simple recursive type which is able to render its
+/// A simple recursive type which is able to render its
 /// components in a tree-like format
 #[derive(Debug, Clone)]
 pub struct Tree<D: Display> {
@@ -48,7 +48,7 @@ impl<D: Display> Tree<D> {
 }
 
 impl<D: Display> Tree<D> {
-    /// Ensure all lines for `root` are indented
+    /// Set whether all lines for `root` should be indented
     pub fn set_multiline(&mut self, yes: bool) -> &mut Self {
         self.multiline = yes;
         self
@@ -90,7 +90,7 @@ impl<D: Display> Display for Tree<D> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.root.fmt(f)?; // Pass along `f.alternate()`
         writeln!(f)?;
-        let mut queue = DisplauQueue::new();
+        let mut queue = DisplayQueue::new();
         let no_space = Rc::new(Vec::new());
         let default_glyphs = GlyphPalette::new();
         let glyphs = self.glyphs.as_ref().unwrap_or(&default_glyphs);
@@ -163,10 +163,10 @@ impl<D: Display> Display for Tree<D> {
     }
 }
 
-type DisplauQueue<'t, D> = VecDeque<(bool, &'t Tree<D>, &'t GlyphPalette, Rc<Vec<SpacePalette>>)>;
+type DisplayQueue<'t, D> = VecDeque<(bool, &'t Tree<D>, &'t GlyphPalette, Rc<Vec<SpacePalette>>)>;
 
 fn enqueue_leaves<'t, D: Display>(
-    queue: &mut DisplauQueue<'t, D>,
+    queue: &mut DisplayQueue<'t, D>,
     parent: &'t Tree<D>,
     parent_glyphs: &'t GlyphPalette,
     spaces: Rc<Vec<SpacePalette>>,
