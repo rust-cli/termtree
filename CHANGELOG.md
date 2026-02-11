@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+## [1.0.0] - 2026-02-11
+
 ## [0.5.1] - 2024-07-25
 
 ## [0.5.0] - 2024-07-09
@@ -90,7 +92,8 @@ Forked from `treeline`
 * initial release
 
 <!-- next-url -->
-[Unreleased]: https://github.com/rust-cli/termtree/compare/v0.5.1...HEAD
+[Unreleased]: https://github.com/rust-cli/termtree/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/rust-cli/termtree/compare/v0.5.1...v1.0.0
 [0.5.1]: https://github.com/rust-cli/termtree/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/rust-cli/termtree/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/rust-cli/termtree/compare/v0.4.0...v0.4.1
