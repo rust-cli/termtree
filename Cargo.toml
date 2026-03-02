@@ -5,7 +5,7 @@ resolver = "2"
 repository = "https://github.com/rust-cli/termtree"
 license = "MIT"
 edition = "2021"
-rust-version = "1.74"  # MSRV
+rust-version = "1.85"  # MSRV
 include = [
   "build.rs",
   "src/**/*",
