@@ -2,7 +2,7 @@
 //! To see the complete demo coupling with rust-script, you can refer to
 //! <https://users.rust-lang.org/t/cargo-test-output-with-indentation/100149/2>
 
-use std::collections::{btree_map::Entry, BTreeMap};
+use std::collections::{BTreeMap, btree_map::Entry};
 use termtree::{GlyphPalette, Tree};
 
 fn main() {
