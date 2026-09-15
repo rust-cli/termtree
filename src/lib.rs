@@ -14,14 +14,14 @@ use std::rc::Rc;
 #[derive(Debug, Clone)]
 pub struct Tree<D: Display> {
     pub root: D,
-    pub leaves: Vec<Tree<D>>,
+    pub leaves: Vec<Self>,
     multiline: bool,
     glyphs: Option<GlyphPalette>,
 }
 
 impl<D: Display> Tree<D> {
     pub fn new(root: D) -> Self {
-        Tree {
+        Self {
             root,
             leaves: Vec::new(),
             multiline: false,
@@ -29,7 +29,7 @@ impl<D: Display> Tree<D> {
         }
     }
 
-    pub fn with_leaves(mut self, leaves: impl IntoIterator<Item = impl Into<Tree<D>>>) -> Self {
+    pub fn with_leaves(mut self, leaves: impl IntoIterator<Item = impl Into<Self>>) -> Self {
         self.leaves = leaves.into_iter().map(Into::into).collect();
         self
     }
@@ -62,7 +62,7 @@ impl<D: Display> Tree<D> {
 }
 
 impl<D: Display> Tree<D> {
-    pub fn push(&mut self, leaf: impl Into<Tree<D>>) -> &mut Self {
+    pub fn push(&mut self, leaf: impl Into<Self>) -> &mut Self {
         self.leaves.push(leaf.into());
         self
     }
@@ -80,8 +80,8 @@ impl<D: Display> Extend<D> for Tree<D> {
     }
 }
 
-impl<D: Display> Extend<Tree<D>> for Tree<D> {
-    fn extend<T: IntoIterator<Item = Tree<D>>>(&mut self, iter: T) {
+impl<D: Display> Extend<Self> for Tree<D> {
+    fn extend<T: IntoIterator<Item = Self>>(&mut self, iter: T) {
         self.leaves.extend(iter);
     }
 }
