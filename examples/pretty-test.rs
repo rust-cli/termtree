@@ -25,7 +25,7 @@ test
 
 #[derive(Debug)]
 enum Node<'s> {
-    Path(BTreeMap<&'s str, Node<'s>>),
+    Path(BTreeMap<&'s str, Self>),
     Status(&'s str),
 }
 
